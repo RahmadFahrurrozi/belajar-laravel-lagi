@@ -8,6 +8,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/blog', [BlogController::class, 'indexBlog'])->name('blog');
+
 
 // Route::get('/about', function () {
 //     $profile = [
@@ -21,5 +23,3 @@ Route::get('/', function () {
 // Route::get('/blog/{id}', function (Request $request) {
 //     return 'Blog ID: ' . $request->id;
 // })->name('blog');
-
-Route::get('/about', [BlogController::class, 'indexAbout'])->name('about');

@@ -3,17 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
-    public function indexAbout()
+    public function indexBlog(Request $request)
     {
-        $profile = [
-            'name' => 'John Doe',
-            'email' => 'HcK8e@example.com',
-            'phone' => '123-456-7890',
-            'address' => '123 Main St, Springfield, IL 62701',
-        ];
-        return view('about', ['profile' => $profile]);
+        $search = $request->input('search');
+        $author = $request->input('author');
+
+        $blogs = DB::table('blogs')
+            ->when($search, function ($query, $search) {
+                return $query->where('title', 'LIKE', '%' . $search . '%')
+                             ->orWhere('content', 'LIKE', '%' . $search . '%');
+            })
+            ->when($author, function ($query, $author) {
+                return $query->where('author', 'LIKE', '%' . $author . '%');
+            })
+            ->paginate(10);
+
+        return view('blog', ['blogs' => $blogs, 'author' => $author, 'search' => $search]);
     }
 }
