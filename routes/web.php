@@ -9,7 +9,8 @@ Route::get('/', function () {
 });
 
 Route::get('/blog', [BlogController::class, 'indexBlog'])->name('blog');
-
+Route::get('/blog/add', [BlogController::class, 'addBlog'])->name('add_blog');
+Route::post('/blog/create', [BlogController::class, 'createBlog'])->name('create_blog');
 
 // Route::get('/about', function () {
 //     $profile = [

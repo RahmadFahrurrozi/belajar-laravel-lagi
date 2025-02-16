@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blogs', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('slug');
-            $table->text('description');
-            $table->string('image');
-            $table->text('content');
-            $table->timestamps();
+        Schema::table('blogs', function (Blueprint $table) {
+            $table->string('slug')->nullable()->change(); // Membuat slug boleh NULL
         });
     }
 
@@ -27,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blogs');
+        Schema::table('blogs', function (Blueprint $table) {
+            $table->string('slug')->nullable(false)->change();
+        });
     }
 };

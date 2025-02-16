@@ -21,7 +21,7 @@ class BlogFactory extends Factory
     {
         return [
             'title' => fake()->sentence(),
-            'slug' => fake()->slug(),
+            // 'slug' => fake()->slug(),
             'description' => fake()->paragraph(),
             'image' => fake()->imageUrl(),
             'content' => fake()->text(),

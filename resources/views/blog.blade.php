@@ -8,6 +8,44 @@
     <title>Data Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .alert {
+            width: 300px;
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            z-index: 1000;
+        }
+
+        /* Warna untuk notifikasi sukses */
+        .alert-success {
+            background-color: #28a745;
+            /* Hijau */
+        }
+
+        /* Animasi muncul (fade-in dan slide-in) */
+        .alert.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Animasi menghilang (fade-out dan slide-out) */
+        .alert.hide {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        /* Efek hover (opsional) */
+        .alert:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 
 <body class="bg-light">
@@ -24,11 +62,18 @@
                     <h1 class="display-4 fw-bold text-primary">Data Blog Posts</h1>
                     <p class="text-muted lead">Manage and explore your blog entries</p>
                 </div>
-                <div class="col-md-4 text-end align-self-center">
+                <a href="{{ route('add_blog') }}" class="col-md-4 text-end align-self-center">
                     <button class="btn btn-primary btn-lg">
                         <i class="bi bi-plus-circle"></i> New Post
                     </button>
-                </div>
+                </a>
+
+                @if (session('success'))
+                    <div id="alert-success" class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
                 <p class="mt-4 text-sm/relaxed fs-4">Search by title, content, or author</p>
                 <form method="GET">
                     <div class="input-group mb-3">
@@ -40,11 +85,9 @@
                     </div>
                 </form>
             </div>
-
             @if ($blogs->isEmpty())
                 <div class="alert alert-warning" role="alert">
-                    No matching posts found for <strong
-                        class="fw-semibold text-danger">"{{ request('search') ?? request('author') }}"</strong>.
+                    No posts found. <a href="{{ route('add_blog') }}" class="alert-link">Create a new post</a> now!
                 </div>
             @else
                 <div class="card shadow-sm">
@@ -57,6 +100,7 @@
                                         <th scope="col">Title</th>
                                         <th scope="col">Content</th>
                                         <th scope="col">Author</th>
+                                        <th scope="col">Image</th>
                                         <th scope="col" class="text-center">Actions</th>
                                     </tr>
                                 </thead>
@@ -74,6 +118,10 @@
                                                         class="rounded-circle me-2 " width="32" alt="Author avatar">
                                                     <span>{{ $blog->author }}</span>
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <img src="{{ $blog->image }}" class="img-fluid" width="150"
+                                                    alt="Post image">
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-center gap-2">
@@ -109,7 +157,30 @@
             <p class="text-center text-muted mb-0">© {{ date('Y') }} Data Blog. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var alertElement = document.getElementById("alert-success");
 
+            if (alertElement) {
+                // Tampilkan notifikasi dengan animasi
+                setTimeout(function() {
+                    alertElement.classList.add("show");
+                }, 100); // Delay kecil untuk memastikan animasi berjalan
+
+                // Sembunyikan notifikasi setelah 5 detik
+                setTimeout(function() {
+                    alertElement.classList.remove("show");
+                    alertElement.classList.add("hide");
+
+                    // Hapus elemen dari DOM setelah animasi selesai
+                    setTimeout(function() {
+                        alertElement.remove();
+                    }, 500); // Sesuaikan dengan durasi animasi fade-out
+                }, 5000); // 5 detik
+            }
+        });
+    </script>
+    {{-- <script src="{{ asset('js/blog-animation-alert.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
