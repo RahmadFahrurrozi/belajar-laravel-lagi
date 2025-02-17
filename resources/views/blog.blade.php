@@ -125,6 +125,9 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-center gap-2">
+                                                    <a href="{{ route('show_blog', ['id' => $blog->id]) }}"
+                                                        class="btn btn-outline-success btn-sm">
+                                                        <i class="bi bi-eye"></i> View </a>
                                                     <a href="#" class="btn btn-outline-primary btn-sm">
                                                         <i class="bi bi-pencil"></i> Edit
                                                     </a>

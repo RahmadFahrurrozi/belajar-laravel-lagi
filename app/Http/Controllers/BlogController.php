@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -55,9 +56,14 @@ class BlogController extends Controller
 
         //buat pesan sukses
         // $request->Session()->flash('success', 'Blog berhasil ditambahkan');
-        Session::flash('success', 'Blog berhasil ditambahkan');
+        Session::flash('success', 'Blog added successfully');
 
         // Redirect ke halaman blog
         return redirect()->route('blog');
+    }
+
+    public function showBlog($id) {
+        $blog = DB::table('blogs')->where('id', $id)->first();
+        return view('show_detail_blogs', ['blog' => $blog]);
     }
 }
