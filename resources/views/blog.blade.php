@@ -128,7 +128,8 @@
                                                     <a href="{{ route('show_blog', ['id' => $blog->id]) }}"
                                                         class="btn btn-outline-success btn-sm">
                                                         <i class="bi bi-eye"></i> View </a>
-                                                    <a href="#" class="btn btn-outline-primary btn-sm">
+                                                    <a href="{{ route('edit_blog', ['id' => $blog->id]) }}"
+                                                        class="btn btn-outline-primary btn-sm">
                                                         <i class="bi bi-pencil"></i> Edit
                                                     </a>
                                                     <form method="POST" class="d-inline">

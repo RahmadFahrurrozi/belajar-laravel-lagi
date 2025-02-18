@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create New Post</title>
+    <title>Edit Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
@@ -54,7 +54,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="form-container">
-                        <h2 class="text-center mb-4 fw-bold text-primary">Create New Post</h2>
+                        <h2 class="text-center mb-4 fw-bold text-primary">Edit Post</h2>
 
                         <!-- Tampilkan pesan error atau sukses -->
                         @if ($errors->any())
@@ -68,40 +68,42 @@
                         @endif
 
 
-                        <form method="POST" action="{{ route('create_blog') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('update_blog', $blog->id) }}"
+                            enctype="multipart/form-data">
                             @csrf
+                            @method('PATCH')
                             <!-- Judul -->
                             <div class="mb-4">
                                 <label for="title" class="form-label">Title</label>
                                 <input type="text" name="title" class="form-control" id="title"
-                                    placeholder="Enter post title" value="{{ old('title') }}">
+                                    placeholder="Enter post title" value="{{ $blog->title }}">
                             </div>
 
                             <!-- Author -->
                             <div class="mb-4">
                                 <label for="author" class="form-label">Author</label>
                                 <input name="author" type="text" class="form-control" id="author"
-                                    placeholder="Enter author name" value="{{ old('author') }}">
+                                    placeholder="Enter author name" value="{{ $blog->author }}">
                             </div>
 
                             <!-- Konten -->
                             <div class="mb-4">
                                 <label for="content" class="form-label">Content</label>
                                 <textarea class="form-control" name="content" id="content" rows="5"
-                                    placeholder="Write your post content here...">{{ old('content') }}</textarea>
+                                    placeholder="Write your post content here...">{{ $blog->content ?? old('content') }}</textarea>
                             </div>
 
                             <!-- Gambar -->
                             <div class="mb-4">
                                 <label for="image" class="form-label">Upload Image</label>
                                 <input type="file" name="image" class="form-control" id="image"
-                                    accept="image/*">
+                                    accept="image/*" value="{{ $blog->image }}">
                                 </input>
                             </div>
 
                             <!-- Tombol Submit -->
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg btn-submit">Create Post</button>
+                                <button type="submit" class="btn btn-primary btn-lg btn-submit">Update Post</button>
                             </div>
                         </form>
                     </div>

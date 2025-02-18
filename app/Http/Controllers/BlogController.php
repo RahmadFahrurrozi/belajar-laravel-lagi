@@ -53,7 +53,9 @@ class BlogController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
+        if($request->hasFile('image')) {
+            $request->file('image')->store('public/images');
+        }
         //buat pesan sukses
         // $request->Session()->flash('success', 'Blog berhasil ditambahkan');
         Session::flash('success', 'Blog added successfully');
@@ -64,6 +66,40 @@ class BlogController extends Controller
 
     public function showBlog($id) {
         $blog = DB::table('blogs')->where('id', $id)->first();
+        if(!Blog::find($id)) {
+            abort(404);
+        }
         return view('show_detail_blogs', ['blog' => $blog]);
+    }
+
+    public function editBlog($id) {
+        $blog = DB::table('blogs')->where('id', $id)->first();
+        if(!Blog::find($id)) {
+            abort(404);
+        }
+        return view('edit_blog', ['blog' => $blog]);
+    }
+    public function updateBlog(Request $request, $id) {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp|max:10240', // Maksimal 10MB
+        ]);
+        $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('public/images');
+            }
+        DB::table('blogs')->where('id', $id)->update([
+            'title' => $request->title,
+            'author' => $request->author,
+            'content' => $request->content,
+            'description' => $request->description,
+            'image' => $imagePath, 
+            'updated_at' => now(),
+        ]);
+
+        Session::flash('success', 'Blog updated successfully');
+        return redirect()->route('blog');
     }
 }
