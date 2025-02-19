@@ -8,6 +8,8 @@
     <title>Edit Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+
     <style>
         .form-container {
             background: #ffffff;
@@ -102,9 +104,13 @@
                             </div>
 
                             <!-- Tombol Submit -->
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg btn-submit">Update Post</button>
-                            </div>
+                            <form action="{{ route('update_blog', ['id' => $blog->id]) }}" method="POST"
+                                class="d-inline delete-form">
+                                @csrf
+                                <button type="button" class="btn btn-primary btn-lg btn-submit delete-btn">
+                                    <i class="bi bi-edit"></i> Save Changes
+                                </button>
+                            </form>
                         </form>
                     </div>
                 </div>
@@ -114,10 +120,56 @@
 
     <!-- Footer -->
     <footer>
-        <p class="text-center text-muted mb-0">© {{ date('Y') }} Data Blog. All rights reserved.</p>
+        <p class="text-center text-muted mb-0">© {{ date('Y') }} Data Blog by <span
+                class="text-primary fw-semibold">ROZI</span>. All rights
+            reserved.</p>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var alertElement = document.getElementById("alert-success");
+
+            if (alertElement) {
+                setTimeout(function() {
+                    alertElement.classList.add("show");
+                }, 100);
+
+                setTimeout(function() {
+                    alertElement.classList.remove("show");
+                    alertElement.classList.add("hide");
+
+                    setTimeout(function() {
+                        alertElement.remove();
+                    }, 500);
+                }, 5000);
+            }
+        });
+    </script>
+
+    <!-- Delete Confirmation Script -->
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Save Changes?',
+                    text: "Are you sure you want to save the changes?",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#0052cc',
+                    cancelButtonColor: ' #404040',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 </body>
 
 </html>

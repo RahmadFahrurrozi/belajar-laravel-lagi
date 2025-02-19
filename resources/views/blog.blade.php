@@ -8,6 +8,9 @@
     <title>Data Blog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Add in head section -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+
     <style>
         .alert {
             width: 300px;
@@ -132,11 +135,12 @@
                                                         class="btn btn-outline-primary btn-sm">
                                                         <i class="bi bi-pencil"></i> Edit
                                                     </a>
-                                                    <form method="POST" class="d-inline">
+                                                    <form action="{{ route('delete_blog', ['id' => $blog->id]) }}"
+                                                        method="POST" class="d-inline delete-form">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-outline-danger btn-sm"
-                                                            onclick="return confirm('Are you sure you want to delete this post?')">
+                                                        <button type="button"
+                                                            class="btn btn-outline-danger btn-sm delete-btn">
                                                             <i class="bi bi-trash"></i> Delete
                                                         </button>
                                                     </form>
@@ -156,11 +160,12 @@
         </section>
     </main>
 
-    <footer class="bg-white py-4 mt-5 border-top">
-        <div class="container">
-            <p class="text-center text-muted mb-0">© {{ date('Y') }} Data Blog. All rights reserved.</p>
-        </div>
+    <footer class="bg-white shadow py-4 mt-5">
+        <p class="text-center text-muted mb-0">© {{ date('Y') }} Data Blog by <span
+                class="text-primary fw-semibold">ROZI</span>. All rights
+            reserved.</p>
     </footer>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var alertElement = document.getElementById("alert-success");
@@ -184,8 +189,54 @@
             }
         });
     </script>
+    <!-- Alert Animation Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var alertElement = document.getElementById("alert-success");
+
+            if (alertElement) {
+                setTimeout(function() {
+                    alertElement.classList.add("show");
+                }, 100);
+
+                setTimeout(function() {
+                    alertElement.classList.remove("show");
+                    alertElement.classList.add("hide");
+
+                    setTimeout(function() {
+                        alertElement.remove();
+                    }, 500);
+                }, 5000);
+            }
+        });
+    </script>
+
+    <!-- Delete Confirmation Script -->
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "you want to delete this post?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#404040',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
+    </script>
     {{-- <script src="{{ asset('js/blog-animation-alert.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+
 </body>
 
 </html>

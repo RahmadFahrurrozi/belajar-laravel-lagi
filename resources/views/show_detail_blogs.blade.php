@@ -114,10 +114,10 @@
         </div>
     </main>
 
-    <footer class="bg-white py-4 border-top">
-        <div class="container">
-            <p class="text-center text-muted mb-0">© {{ date('Y') }} Data Blog. All rights reserved.</p>
-        </div>
+    <footer>
+        <p class="text-center text-muted mb-0">© {{ date('Y') }} Data Blog by <span
+                class="text-primary fw-semibold">ROZI</span>. All rights
+            reserved.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -102,4 +102,9 @@ class BlogController extends Controller
         Session::flash('success', 'Blog updated successfully');
         return redirect()->route('blog');
     }
+    public function deleteBlog($id) {
+        DB::table('blogs')->where('id', $id)->delete();
+        Session::flash('success', 'Blog deleted successfully');
+        return redirect()->route('blog');
+    }
 }

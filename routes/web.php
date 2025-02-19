@@ -14,6 +14,7 @@ Route::post('/blog/create', [BlogController::class, 'createBlog'])->name('create
 Route::get('/blog/{id}/detail', [BlogController::class, 'showBlog'])->name('show_blog');
 Route::get('/blog/{id}/edit', [BlogController::class, 'editBlog'])->name('edit_blog');
 Route::patch('/blog/{id}/update', [BlogController::class, 'updateBlog'])->name('update_blog');
+Route::delete('/blog/{id}/delete', [BlogController::class, 'deleteBlog'])->name('delete_blog');
 
 // Route::get('/about', function () {
 //     $profile = [
